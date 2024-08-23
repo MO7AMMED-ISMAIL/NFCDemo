@@ -7,7 +7,7 @@ const NFCComponent = () => {
     const [scanning , setScanning] = useState(false);
 
     const writeToNFC = async () => {
-        setScanning(!scanning);
+        setScanning(true);
         try {
             const ndef = new window.NDEFReader();
             await ndef.write({
@@ -18,14 +18,14 @@ const NFCComponent = () => {
             console.error('Error writing to NFC tag:', error);
             alert('Cannot write to NFC tag: ' + error.message);
         }
-        setScanning(!scanning);
+        setScanning(false);
     };
 
     return (
         <div className="container text-center mt-5">
             <h1>NFC Demo</h1>
             {
-                scanning ? (
+                scanning === false ? (
                     <button 
                         className="btn btn-primary mt-3" 
                         onClick={writeToNFC}
