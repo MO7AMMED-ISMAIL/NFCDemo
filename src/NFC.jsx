@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NFCComponent = () => {
     const [message, setMessage] = useState('');
-    const [nfcUrl, setNfcUrl] = useState('https://www.linkedin.com/in/mohammed-ismail-6b8931275/');
+    const [nfcUrl, setNfcUrl] = useState('https://tapnet.pages.dev/ali');
 
     const writeToNFC = async () => {
         try {
