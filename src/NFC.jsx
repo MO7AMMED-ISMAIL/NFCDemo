@@ -1,45 +1,33 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NFCComponent = () => {
-  const [message, setMessage] = useState('');
-  const [nfcUrl, setNfcUrl] = useState('https://www.linkedin.com/in/mohammed-ismail-6b8931275/');
+    const [message, setMessage] = useState('');
+    const [nfcUrl, setNfcUrl] = useState('https://www.linkedin.com/in/mohammed-ismail-6b8931275/');
 
-  const writeToNFC = async () => {
-    try {
-        console.log('Attempting to write to NFC tag...');
-        const ndef = new window.NDEFReader();
-        console.log('NDEFReader initialized');
-        await ndef.write({
-            records: [{ recordType: 'url', data: nfcUrl }],
-        });
-        console.log('Write operation completed');
-        alert('URL written to NFC tag!');
-    } catch (error) {
-        console.error('Error writing to NFC tag:', error);
-        alert(`Cannot write to NFC tag: ${error.message}`);
-    }
-};
-
-    const readFromNFC = async () => {
+    const writeToNFC = async () => {
         try {
             const ndef = new window.NDEFReader();
-            await ndef.scan();
-            ndef.onreading = (event) => {
-                const url = event.message.records[0].data;
-                setMessage(`URL from NFC tag: ${url}`);
-                window.location.href = url;
-            };
+            await ndef.write({
+                records: [{ recordType: 'url', data: nfcUrl }],
+            });
+            alert('URL written to NFC tag! sucessfully');
         } catch (error) {
-            console.error('Error reading NFC tag:', error);
+            console.error('Error writing to NFC tag:', error);
+            alert('Cannot write to NFC tag: ' + error.message);
         }
     };
 
     return (
-        <div>
-        <h1>NFC Demo</h1>
-        <button onClick={writeToNFC}>Write to NFC</button>
-        <button onClick={readFromNFC}>Read from NFC</button>
-        {message && <p>{message}</p>}
+        <div className="container text-center mt-5">
+            <h1>NFC Demo</h1>
+            <button 
+                className="btn btn-primary mt-3" 
+                onClick={writeToNFC}
+            >
+                Write to NFC
+            </button>
+            {message && <p className="mt-3">{message}</p>}
         </div>
     );
 };
