@@ -13,6 +13,7 @@ const NFCComponent = () => {
             alert('URL written to NFC tag!');
         } catch (error) {
             console.error('Error writing to NFC tag:', error);
+            alert('cant wirte it to NFC tag');
         }
     };
 
