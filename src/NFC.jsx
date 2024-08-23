@@ -4,18 +4,21 @@ const NFCComponent = () => {
   const [message, setMessage] = useState('');
   const [nfcUrl, setNfcUrl] = useState('https://www.linkedin.com/in/mohammed-ismail-6b8931275/');
 
-    const writeToNFC = async () => {
-        try {
-            const ndef = new window.NDEFReader();
-            await ndef.write({
-                records: [{ recordType: 'url', data: nfcUrl }],
-            });
-            alert('URL written to NFC tag!');
-        } catch (error) {
-            console.error('Error writing to NFC tag:', error);
-            alert('cant wirte it to NFC tag');
-        }
-    };
+  const writeToNFC = async () => {
+    try {
+        console.log('Attempting to write to NFC tag...');
+        const ndef = new window.NDEFReader();
+        console.log('NDEFReader initialized');
+        await ndef.write({
+            records: [{ recordType: 'url', data: nfcUrl }],
+        });
+        console.log('Write operation completed');
+        alert('URL written to NFC tag!');
+    } catch (error) {
+        console.error('Error writing to NFC tag:', error);
+        alert(`Cannot write to NFC tag: ${error.message}`);
+    }
+};
 
     const readFromNFC = async () => {
         try {
