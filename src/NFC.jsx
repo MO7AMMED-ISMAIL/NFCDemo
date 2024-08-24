@@ -4,16 +4,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const NFCComponent = () => {
     const [message, setMessage] = useState('');
     const [nfcUrl, setNfcUrl] = useState('https://tapnet.pages.dev/ali');
-    const [scanning , setScanning] = useState(false);
+    const [scanning, setScanning] = useState(false);
 
     const writeToNFC = async () => {
         setScanning(true);
         try {
-            const ndef = new window.NDEFReader();
-            await ndef.write({
-                records: [{ recordType: 'url', data: nfcUrl }],
-            });
-            setMessage("NFC Card Open the url successfully... ");
+            if ('NDEFReader' in window) {
+                const ndef = new window.NDEFReader();
+                await ndef.write({
+                    records: [{ recordType: 'url', data: nfcUrl }],
+                });
+                setMessage("NFC Card opened the URL successfully...");
+            } else {
+                setMessage("NFC writing is not supported on this device/browser.");
+            }
         } catch (error) {
             console.error('Error writing to NFC tag:', error);
             alert('Cannot write to NFC tag: ' + error.message);
@@ -32,16 +36,15 @@ const NFCComponent = () => {
                     >
                         Scan NFC Card
                     </button>
-                ):(
+                ) : (
                     <>
                         <h1>PLZ Near NFC Card From mobile to scan</h1>
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
                         </div>
                     </>
                 )
             }
-            
             {message && <p className="mt-3 text-success">{message}</p>}
         </div>
     );
