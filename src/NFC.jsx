@@ -5,6 +5,7 @@ const NFCComponent = () => {
     const [message, setMessage] = useState('');
     const [nfcUrl, setNfcUrl] = useState('https://tapnet.pages.dev/ali');
     const [scanning, setScanning] = useState(false);
+    const [error , setError] = useState('')
 
     const writeToNFC = async () => {
         setScanning(true);
@@ -16,7 +17,7 @@ const NFCComponent = () => {
                 });
                 setMessage("NFC Card opened the URL successfully...");
             } else {
-                setMessage("NFC writing is not supported on this device/browser.");
+                setError("NFC writing is not supported on this device/browser.");
             }
         } catch (error) {
             console.error('Error writing to NFC tag:', error);
@@ -46,6 +47,7 @@ const NFCComponent = () => {
                 )
             }
             {message && <p className="mt-3 text-success">{message}</p>}
+            {error && <p className="mt-3 text-danger">{error}</p>}
         </div>
     );
 };
