@@ -32,18 +32,27 @@ const NFCComponent = () => {
             if ('NDEFReader' in window) {
                 const ndef = new window.NDEFReader();
                 await ndef.scan();
+
                 ndef.onreading = (event) => {
                     const message = event.message;
                     for (const record of message.records) {
                         if (record.recordType === 'url') {
                             const url = new TextDecoder().decode(record.data);
                             setMessage(`NFC Tag contains URL: ${url}`);
-                            window.location.href = url; // Automatically navigate to the URL
+                            window.location.href = url;
                         } else {
                             setMessage('NFC Tag read, but no URL found.');
                         }
                     }
                 };
+
+                // Automatically stop scanning after 1 minute (60000 ms)
+                setTimeout(() => {
+                    ndef.onreading = null;
+                    setScanning(false);
+                    setError('NFC scan timed out. Please try again.');
+                }, 60000); // 60 seconds
+
             } else {
                 setError("NFC reading is not supported on this device/browser.");
             }
@@ -51,7 +60,6 @@ const NFCComponent = () => {
             console.error('Error reading from NFC tag:', error);
             alert('Cannot read NFC tag: ' + error.message);
         }
-        setScanning(false);
     };
 
     return (
