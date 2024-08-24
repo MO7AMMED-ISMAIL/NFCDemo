@@ -59,20 +59,27 @@ const NFCComponent = () => {
             <h1>NFC Demo</h1>
             {
                 scanning === false ? (
-                    <>
+                    <div 
+                        style={{
+                            display: 'flex',
+                            width: '100%',
+                            justifyContent: 'center',
+                            gap: '.5rem'
+                        }}
+                    >
                         <button 
-                            className="btn btn-primary mt-3" 
+                            className="btn btn-primary mt-3 " 
                             onClick={writeToNFC}
                         >
                             Write to NFC Card
                         </button>
                         <button 
-                            className="btn btn-secondary mt-3 ml-2" 
+                            className="btn btn-secondary mt-3 " 
                             onClick={readFromNFC}
                         >
                             Scan NFC Card
                         </button>
-                    </>
+                    </div>
                 ) : (
                     <>
                         <h1>PLZ Near NFC Card From mobile to scan</h1>
