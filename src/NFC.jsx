@@ -5,7 +5,7 @@ const NFCComponent = () => {
     const [message, setMessage] = useState('');
     const [nfcUrl, setNfcUrl] = useState('https://tapnet.pages.dev/ali');
     const [scanning, setScanning] = useState(false);
-    const [error , setError] = useState('')
+    const [error, setError] = useState('');
 
     const writeToNFC = async () => {
         setScanning(true);
@@ -26,17 +26,53 @@ const NFCComponent = () => {
         setScanning(false);
     };
 
+    const readFromNFC = async () => {
+        setScanning(true);
+        try {
+            if ('NDEFReader' in window) {
+                const ndef = new window.NDEFReader();
+                await ndef.scan();
+                ndef.onreading = (event) => {
+                    const message = event.message;
+                    for (const record of message.records) {
+                        if (record.recordType === 'url') {
+                            const url = new TextDecoder().decode(record.data);
+                            setMessage(`NFC Tag contains URL: ${url}`);
+                            window.location.href = url; // Automatically navigate to the URL
+                        } else {
+                            setMessage('NFC Tag read, but no URL found.');
+                        }
+                    }
+                };
+            } else {
+                setError("NFC reading is not supported on this device/browser.");
+            }
+        } catch (error) {
+            console.error('Error reading from NFC tag:', error);
+            alert('Cannot read NFC tag: ' + error.message);
+        }
+        setScanning(false);
+    };
+
     return (
         <div className="container text-center mt-5">
             <h1>NFC Demo</h1>
             {
                 scanning === false ? (
-                    <button 
-                        className="btn btn-primary mt-3" 
-                        onClick={writeToNFC}
-                    >
-                        Scan NFC Card
-                    </button>
+                    <>
+                        <button 
+                            className="btn btn-primary mt-3" 
+                            onClick={writeToNFC}
+                        >
+                            Write to NFC Card
+                        </button>
+                        <button 
+                            className="btn btn-secondary mt-3 ml-2" 
+                            onClick={readFromNFC}
+                        >
+                            Scan NFC Card
+                        </button>
+                    </>
                 ) : (
                     <>
                         <h1>PLZ Near NFC Card From mobile to scan</h1>
