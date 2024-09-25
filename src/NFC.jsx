@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NFCComponent = () => {
     const [message, setMessage] = useState('');
-    const [nfcUrl, setNfcUrl] = useState('https://tapnet.pages.dev/ali');
+    const [nfcUrl, setNfcUrl] = useState('https://tapnet.pages.dev/mernstack');
     const [scanning, setScanning] = useState(false);
     const [error, setError] = useState('');
 
