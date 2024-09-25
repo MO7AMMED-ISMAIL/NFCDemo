@@ -64,7 +64,7 @@ const NFCComponent = () => {
 
     return (
         <div className="container text-center mt-5">
-            <h1>NFC Demo</h1>
+            <h1>NFC Demo2</h1>
             {
                 scanning === false ? (
                     <div 
